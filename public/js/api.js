@@ -5,7 +5,21 @@
 
 const API = (() => {
   const TOKEN_KEY = 'pulse_token';
-  const BASE_URL = '/api';
+  const SERVER_ORIGIN = (window.location.protocol === 'file:' || (window.location.port && window.location.port !== '3000'))
+    ? 'http://localhost:3000'
+    : '';
+  const BASE_URL = `${SERVER_ORIGIN}/api`;
+
+  function resolveMediaUrl(url) {
+    if (!url) return '';
+    if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:')) {
+      return url;
+    }
+    if (url.startsWith('/')) {
+      return `${SERVER_ORIGIN}${url}`;
+    }
+    return `${SERVER_ORIGIN}/${url}`;
+  }
 
   function getToken() {
     return localStorage.getItem(TOKEN_KEY);
@@ -57,6 +71,7 @@ const API = (() => {
     getToken,
     setToken,
     hasToken: () => !!getToken(),
+    resolveMediaUrl,
 
     // Generic HTTP helpers
     get: (endpoint) => request(endpoint, { method: 'GET' }),

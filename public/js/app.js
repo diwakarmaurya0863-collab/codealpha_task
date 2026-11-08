@@ -130,10 +130,11 @@ const App = (() => {
       const handleEl = document.getElementById('sidebar-user-handle');
       const creatorAvatarEl = document.getElementById('creator-avatar');
 
-      if (avatarEl) avatarEl.src = state.currentUser.avatar_url || getDefaultAvatar(state.currentUser.username);
+      const userAvatar = API.resolveMediaUrl(state.currentUser.avatar_url) || getDefaultAvatar(state.currentUser.username);
+      if (avatarEl) avatarEl.src = userAvatar;
       if (nameEl) nameEl.textContent = state.currentUser.full_name;
       if (handleEl) handleEl.textContent = `@${state.currentUser.username}`;
-      if (creatorAvatarEl) creatorAvatarEl.src = state.currentUser.avatar_url || getDefaultAvatar(state.currentUser.username);
+      if (creatorAvatarEl) creatorAvatarEl.src = userAvatar;
     }
   }
 
@@ -291,12 +292,14 @@ const App = (() => {
     const parsedContent = formatPostContent(post.content);
     const likedClass = post.isLiked ? 'liked' : '';
     const bookmarkedClass = post.isBookmarked ? 'bookmarked' : '';
+    const authorAvatar = API.resolveMediaUrl(author.avatarUrl) || getDefaultAvatar(author.username);
+    const mediaUrl = API.resolveMediaUrl(post.mediaUrl);
 
     return `
       <article class="post-card" id="post-${post.id}">
         <div class="post-main">
           <div class="post-avatar-col">
-            <img src="${escapeHtml(author.avatarUrl || getDefaultAvatar(author.username))}" 
+            <img src="${escapeHtml(authorAvatar)}" 
                  alt="${escapeHtml(author.username)}" 
                  class="avatar avatar-md"
                  onclick="App.navigateTo('profile', { username: '${escapeHtml(author.username)}' })"
@@ -327,9 +330,9 @@ const App = (() => {
 
             <div class="post-text">${parsedContent}</div>
 
-            ${post.mediaUrl ? `
-              <div class="post-media" onclick="App.openLightbox('${escapeHtml(post.mediaUrl)}')">
-                <img src="${escapeHtml(post.mediaUrl)}" alt="Post image" loading="lazy">
+            ${mediaUrl ? `
+              <div class="post-media" onclick="App.openLightbox('${escapeHtml(mediaUrl)}')">
+                <img src="${escapeHtml(mediaUrl)}" alt="Post image" loading="lazy">
               </div>
             ` : ''}
 
@@ -673,10 +676,10 @@ const App = (() => {
 
       // Set banner & avatar
       const bannerImg = document.getElementById('profile-banner-img');
-      bannerImg.src = user.banner_url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1000&auto=format&fit=crop&q=80';
+      bannerImg.src = API.resolveMediaUrl(user.banner_url) || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1000&auto=format&fit=crop&q=80';
 
       const avatarImg = document.getElementById('profile-avatar-img');
-      avatarImg.src = user.avatar_url || getDefaultAvatar(user.username);
+      avatarImg.src = API.resolveMediaUrl(user.avatar_url) || getDefaultAvatar(user.username);
 
       document.getElementById('profile-full-name').textContent = user.full_name;
       document.getElementById('profile-handle').textContent = `@${user.username}`;

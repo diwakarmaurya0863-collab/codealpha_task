@@ -23,6 +23,17 @@ if (!fs.existsSync(uploadsDir)) {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Enable CORS for development (e.g. VS Code Live Server or external clients)
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 // Serve uploaded media files
 app.use('/uploads', express.static(uploadsDir));
 
