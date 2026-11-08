@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pulse — Modern Social Media Platform</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%3E<text y=%2226%22 font-size=%2228%22>⚡</text></svg>">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- LEFT SIDEBAR NAVIGATION -->
+    <aside class="sidebar-left">
+      <div class="sidebar-header">
+        <a href="#" class="brand-logo" onclick="App.navigateTo('feed'); return false;">
+          <div class="brand-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+          </div>
+          <span class="brand-name">Pulse</span>
+        </a>
+      </div>
+
+      <nav class="nav-menu">
+        <a href="#feed" class="nav-item active" id="nav-feed" onclick="App.navigateTo('feed'); return false;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span class="nav-label">Home</span>
+        </a>
+
+        <a href="#explore" class="nav-item" id="nav-explore" onclick="App.navigateTo('explore'); return false;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <span class="nav-label">Explore</span>
+        </a>
+
+        <a href="#notifications" class="nav-item auth-only" id="nav-notifications" onclick="App.navigateTo('notifications'); return false;">
+          <div class="nav-icon-wrapper">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="badge" id="unread-badge" style="display: none;">0</span>
+          </div>
+          <span class="nav-label">Notifications</span>
+        </a>
+
+        <a href="#saved" class="nav-item auth-only" id="nav-saved" onclick="App.navigateTo('saved'); return false;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span class="nav-label">Saved</span>
+        </a>
+
+        <a href="#profile" class="nav-item auth-only" id="nav-profile" onclick="App.navigateTo('my-profile'); return false;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span class="nav-label">Profile</span>
+        </a>
+
+        <button class="theme-toggle-btn" id="theme-toggle" onclick="App.toggleTheme()" title="Toggle Dark/Light Mode">
+          <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <span class="theme-label">Theme</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-action auth-only">
+        <button class="btn btn-primary btn-post-action" onclick="App.focusPostCreator()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+          <span>Post</span>
+        </button>
+      </div>
+
+      <!-- Current User Footer Card -->
+      <div class="sidebar-footer">
+        <div id="user-profile-summary" class="user-summary auth-only">
+          <div class="user-summary-info" onclick="App.navigateTo('my-profile')">
+            <img src="" alt="avatar" class="avatar avatar-sm" id="sidebar-user-avatar">
+            <div class="user-summary-text">
+              <span class="user-summary-name" id="sidebar-user-name">User</span>
+              <span class="user-summary-handle" id="sidebar-user-handle">@user</span>
+            </div>
+          </div>
+          <button class="btn-icon" onclick="App.logout()" title="Logout">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div id="guest-auth-prompt" class="guest-prompt guest-only">
+          <p class="guest-text">Join Pulse today!</p>
+          <div class="guest-buttons">
+            <button class="btn btn-primary btn-sm" onclick="App.openAuthModal('login')">Log In</button>
+            <button class="btn btn-outline btn-sm" onclick="App.openAuthModal('register')">Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER MAIN COLUMN -->
+    <main class="main-content">
+      <!-- HEADER -->
+      <header class="main-header">
+        <div class="header-title-container">
+          <h1 class="header-title" id="page-title">Home</h1>
+          <span class="header-subtitle" id="page-subtitle"></span>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-sm btn-outline auth-only" onclick="App.openDemoSwitcherModal()">
+            ⚡ Switch Account
+          </button>
+        </div>
+      </header>
+
+      <!-- FEED VIEW -->
+      <div id="view-feed" class="page-view active">
+        <!-- Feed Type Tabs -->
+        <div class="feed-tabs">
+          <button class="tab-btn active" id="tab-for-you" onclick="App.switchFeedTab('all')">For You</button>
+          <button class="tab-btn auth-only" id="tab-following" onclick="App.switchFeedTab('following')">Following</button>
+          <div class="tab-indicator"></div>
+        </div>
+
+        <!-- Tag Filter Banner (if filtering by tag) -->
+        <div id="tag-filter-banner" class="tag-banner" style="display: none;">
+          <span>Filtering by tag: <strong id="current-filter-tag">#tag</strong></span>
+          <button class="btn-icon btn-sm" onclick="App.clearTagFilter()" title="Clear filter">✕</button>
+        </div>
+
+        <!-- POST CREATOR CARD -->
+        <div class="post-creator card auth-only">
+          <div class="creator-header">
+            <img src="" alt="avatar" class="avatar avatar-md" id="creator-avatar">
+            <div class="creator-input-wrapper">
+              <textarea id="post-input" placeholder="What's happening? Share thoughts or #hashtags..." maxlength="500" rows="3"></textarea>
+              <!-- Media Preview Area -->
+              <div id="media-preview-container" class="media-preview-box" style="display: none;">
+                <img id="media-preview-img" src="" alt="Post image preview">
+                <button type="button" class="btn-remove-media" onclick="App.removeSelectedMedia()" title="Remove image">✕</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="creator-footer">
+            <div class="creator-tools">
+              <!-- File upload input -->
+              <input type="file" id="post-file-input" accept="image/*" style="display: none;" onchange="App.handleImageSelected(event)">
+              <button type="button" class="btn-icon-tool" onclick="document.getElementById('post-file-input').click()" title="Add Image">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                <span class="tool-label">Photo</span>
+              </button>
+
+              <button type="button" class="btn-icon-tool" onclick="App.promptImageUrl()" title="Add Image by URL">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                </svg>
+                <span class="tool-label">URL</span>
+              </button>
+
+              <button type="button" class="btn-icon-tool" onclick="App.insertEmoji('✨')" title="Insert Sparkle">✨</button>
+              <button type="button" class="btn-icon-tool" onclick="App.insertEmoji('🚀')" title="Insert Rocket">🚀</button>
+              <button type="button" class="btn-icon-tool" onclick="App.insertEmoji('💡')" title="Insert Idea">💡</button>
+            </div>
+
+            <div class="creator-submit-box">
+              <span class="char-counter" id="char-counter">0 / 500</span>
+              <button class="btn btn-primary" id="btn-submit-post" onclick="App.submitPost()">
+                Post
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- POSTS STREAM -->
+        <div id="posts-container" class="posts-list">
+          <div class="skeleton-loader">
+            <div class="skeleton-post"></div>
+            <div class="skeleton-post"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFILE VIEW -->
+      <div id="view-profile" class="page-view">
+        <div class="profile-card card">
+          <div class="profile-banner-wrapper">
+            <img id="profile-banner-img" src="" alt="Banner" class="profile-banner">
+          </div>
+
+          <div class="profile-details-wrapper">
+            <div class="profile-top-bar">
+              <img id="profile-avatar-img" src="" alt="Avatar" class="avatar avatar-xl profile-avatar">
+              <div class="profile-action-container" id="profile-action-btn-container">
+                <!-- Injected via JS: Edit Profile button or Follow/Unfollow button -->
+              </div>
+            </div>
+
+            <div class="profile-identity">
+              <h2 class="profile-full-name" id="profile-full-name">Name</h2>
+              <span class="profile-handle" id="profile-handle">@username</span>
+            </div>
+
+            <p class="profile-bio" id="profile-bio">User bio goes here...</p>
+
+            <div class="profile-meta">
+              <span class="meta-item" id="profile-location-wrap" style="display: none;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span id="profile-location">City</span>
+              </span>
+
+              <a href="#" target="_blank" rel="noopener noreferrer" class="meta-item meta-link" id="profile-website-wrap" style="display: none;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                </svg>
+                <span id="profile-website">website.com</span>
+              </a>
+
+              <span class="meta-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span id="profile-joined">Joined recently</span>
+              </span>
+            </div>
+
+            <!-- Follow / Following / Posts Counts -->
+            <div class="profile-stats">
+              <div class="stat-item" onclick="App.openFollowModal('following')">
+                <strong class="stat-number" id="profile-following-count">0</strong>
+                <span class="stat-label">Following</span>
+              </div>
+              <div class="stat-item" onclick="App.openFollowModal('followers')">
+                <strong class="stat-number" id="profile-followers-count">0</strong>
+                <span class="stat-label">Followers</span>
+              </div>
+              <div class="stat-item">
+                <strong class="stat-number" id="profile-posts-count">0</strong>
+                <span class="stat-label">Posts</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Tabs -->
+        <div class="feed-tabs">
+          <button class="tab-btn active" id="profile-tab-posts" onclick="App.switchProfileTab('posts')">Posts</button>
+          <button class="tab-btn" id="profile-tab-likes" onclick="App.switchProfileTab('likes')">Likes</button>
+        </div>
+
+        <!-- Profile Posts List -->
+        <div id="profile-posts-container" class="posts-list"></div>
+      </div>
+
+      <!-- NOTIFICATIONS VIEW -->
+      <div id="view-notifications" class="page-view">
+        <div class="notifications-header">
+          <button class="btn btn-sm btn-outline" onclick="App.markAllNotificationsRead()">Mark all as read</button>
+        </div>
+        <div id="notifications-container" class="notifications-list"></div>
+      </div>
+
+      <!-- SAVED / BOOKMARKS VIEW -->
+      <div id="view-saved" class="page-view">
+        <div id="saved-posts-container" class="posts-list"></div>
+      </div>
+
+      <!-- EXPLORE VIEW -->
+      <div id="view-explore" class="page-view">
+        <div class="explore-search-bar card">
+          <input type="text" id="explore-search-input" placeholder="Search people, tags, keywords..." oninput="App.handleExploreSearch(event)">
+        </div>
+        <div id="explore-results-container" class="explore-results"></div>
+      </div>
+    </main>
+
+    <!-- RIGHT SIDEBAR (SEARCH, DEMO, WHO TO FOLLOW, TRENDS) -->
+    <aside class="sidebar-right">
+      <!-- Search Widget -->
+      <div class="search-widget">
+        <div class="search-input-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="sidebar-search-input" placeholder="Search Pulse..." oninput="App.handleLiveSearch(event)" onfocus="App.showSearchResults()" autocomplete="off">
+        </div>
+        <!-- Live Search Dropdown -->
+        <div id="search-dropdown" class="search-dropdown" style="display: none;"></div>
+      </div>
+
+      <!-- Quick Demo Switcher Widget -->
+      <div class="card widget-card">
+        <div class="widget-header">
+          <h3 class="widget-title">⚡ Quick Demo Login</h3>
+          <span class="widget-badge">1-Click</span>
+        </div>
+        <p class="widget-subtitle">Switch test accounts to test likes, follows & comments seamlessly:</p>
+        <div class="demo-accounts-list" id="demo-accounts-box">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Who to Follow Widget -->
+      <div class="card widget-card">
+        <div class="widget-header">
+          <h3 class="widget-title">Who to follow</h3>
+        </div>
+        <div class="suggested-users-list" id="suggested-users-box">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Trending Hashtags Widget -->
+      <div class="card widget-card">
+        <div class="widget-header">
+          <h3 class="widget-title">Trending Topics</h3>
+        </div>
+        <div class="trending-tags-list" id="trending-tags-box">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <div class="right-footer">
+        <p>Pulse Social Media Platform &copy; 2026</p>
+        <p>Built with Express.js, SQLite & Vanilla JS</p>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- AUTH MODAL (Login / Register) -->
+  <div class="modal-backdrop" id="modal-auth" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="auth-modal-title">Welcome to Pulse</h3>
+        <button class="btn-close" onclick="App.closeModal('modal-auth')">✕</button>
+      </div>
+      <div class="modal-tabs">
+        <button class="tab-btn active" id="auth-tab-login" onclick="App.switchAuthTab('login')">Log In</button>
+        <button class="tab-btn" id="auth-tab-register" onclick="App.switchAuthTab('register')">Sign Up</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- LOGIN FORM -->
+        <form id="form-login" onsubmit="App.handleLoginSubmit(event)">
+          <div class="form-group">
+            <label for="login-identifier">Username or Email</label>
+            <input type="text" id="login-identifier" class="form-control" required placeholder="e.g. alex_coder or alex@example.com">
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" class="form-control" required placeholder="••••••••">
+          </div>
+          <div class="form-error" id="login-error" style="display: none;"></div>
+          <button type="submit" class="btn btn-primary btn-block">Log In</button>
+        </form>
+
+        <!-- REGISTER FORM -->
+        <form id="form-register" style="display: none;" onsubmit="App.handleRegisterSubmit(event)">
+          <div class="form-group">
+            <label for="reg-fullname">Full Name</label>
+            <input type="text" id="reg-fullname" class="form-control" required placeholder="Jane Doe">
+          </div>
+          <div class="form-group">
+            <label for="reg-username">Username</label>
+            <input type="text" id="reg-username" class="form-control" required placeholder="janedoe" pattern="^[a-zA-Z0-9_]{3,20}$" title="3-20 chars, letters, numbers, underscores">
+          </div>
+          <div class="form-group">
+            <label for="reg-email">Email</label>
+            <input type="email" id="reg-email" class="form-control" required placeholder="jane@example.com">
+          </div>
+          <div class="form-group">
+            <label for="reg-password">Password</label>
+            <input type="password" id="reg-password" class="form-control" required minlength="6" placeholder="At least 6 characters">
+          </div>
+          <div class="form-group">
+            <label for="reg-bio">Bio (Optional)</label>
+            <textarea id="reg-bio" class="form-control" rows="2" placeholder="Tell us about yourself..."></textarea>
+          </div>
+          <div class="form-error" id="reg-error" style="display: none;"></div>
+          <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT PROFILE MODAL -->
+  <div class="modal-backdrop" id="modal-edit-profile" style="display: none;">
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <h3 class="modal-title">Edit Profile</h3>
+        <button class="btn-close" onclick="App.closeModal('modal-edit-profile')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-edit-profile" onsubmit="App.handleProfileUpdate(event)">
+          <div class="form-group">
+            <label for="edit-fullname">Full Name</label>
+            <input type="text" id="edit-fullname" class="form-control" required maxlength="50">
+          </div>
+          <div class="form-group">
+            <label for="edit-bio">Bio</label>
+            <textarea id="edit-bio" class="form-control" rows="3" maxlength="200" placeholder="A little about yourself"></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="edit-location">Location</label>
+              <input type="text" id="edit-location" class="form-control" placeholder="City, Country" maxlength="50">
+            </div>
+            <div class="form-group">
+              <label for="edit-website">Website</label>
+              <input type="url" id="edit-website" class="form-control" placeholder="https://example.com">
+            </div>
+          </div>
+
+          <div class="form-divider">Avatar & Banner</div>
+
+          <div class="form-group">
+            <label>Avatar Photo</label>
+            <div class="upload-inline">
+              <img src="" id="edit-avatar-preview" class="avatar avatar-md" alt="Avatar Preview">
+              <input type="file" id="edit-avatar-file" accept="image/*" onchange="App.handleAvatarUpload(event)">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-avatar-url">Or Avatar Image URL</label>
+            <input type="url" id="edit-avatar-url" class="form-control" placeholder="https://images.unsplash.com/...">
+          </div>
+
+          <div class="form-group">
+            <label for="edit-banner-url">Banner Image URL</label>
+            <input type="url" id="edit-banner-url" class="form-control" placeholder="https://images.unsplash.com/...">
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline" onclick="App.closeModal('modal-edit-profile')">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="btn-save-profile">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOLLOWERS / FOLLOWING / LIKERS MODAL -->
+  <div class="modal-backdrop" id="modal-users-list" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="users-modal-title">Followers</h3>
+        <button class="btn-close" onclick="App.closeModal('modal-users-list')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="modal-users-container" class="users-list-modal"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMAGE LIGHTBOX MODAL -->
+  <div class="modal-backdrop lightbox-backdrop" id="modal-lightbox" style="display: none;" onclick="App.closeLightbox()">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+      <button class="btn-close lightbox-close" onclick="App.closeLightbox()">✕</button>
+      <img id="lightbox-img" src="" alt="Full view image">
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- MOBILE BOTTOM NAVIGATION -->
+  <nav class="mobile-nav">
+    <button class="mobile-nav-item active" onclick="App.navigateTo('feed')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      </svg>
+    </button>
+    <button class="mobile-nav-item" onclick="App.navigateTo('explore')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </button>
+    <button class="mobile-nav-item auth-only" onclick="App.focusPostCreator()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+    </button>
+    <button class="mobile-nav-item auth-only" onclick="App.navigateTo('notifications')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+      </svg>
+    </button>
+    <button class="mobile-nav-item auth-only" onclick="App.navigateTo('my-profile')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- SCRIPTS -->
+  <script src="/js/api.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

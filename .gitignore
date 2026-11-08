@@ -1,0 +1,7 @@
+node_modules/
+*.log
+.env
+db/social.db-wal
+db/social.db-shm
+uploads/*
+!uploads/.gitkeep
